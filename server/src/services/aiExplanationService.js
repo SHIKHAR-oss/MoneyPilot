@@ -113,7 +113,7 @@ Return a JSON object conforming strictly to this format:
 
     // Enforce 12-second timeout on AI response
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Gemini API request timed out')), 12000)
+      setTimeout(() => reject(new Error('Gemini API request timed out')), 60000)
     );
 
     const apiPromise = model.generateContent(prompt);
@@ -199,7 +199,7 @@ Return a JSON object conforming strictly to this format:
 
     // Enforce 12-second timeout on AI response
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Gemini API request timed out')), 12000)
+      setTimeout(() => reject(new Error('Gemini API request timed out')), 60000)
     );
 
     const apiPromise = model.generateContent(prompt);
