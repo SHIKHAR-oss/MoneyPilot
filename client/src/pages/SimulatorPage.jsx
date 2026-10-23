@@ -36,10 +36,10 @@ export default function SimulatorPage() {
       {/* Page Header */}
       <div>
         <div className="flex items-center gap-2.5">
-          <SlidersHorizontal className="w-6 h-6 text-emerald-400" />
-          <h1 className="text-2xl font-black text-white tracking-tight">Financial Decision Simulator</h1>
+          <SlidersHorizontal className="w-6 h-6 text-[#087F5B]" />
+          <h1 className="text-2xl font-bold text-[#14251C] tracking-tight">Financial Decision Simulator</h1>
         </div>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-[#64736A] mt-1">
           Simulate choices before you make them — Forecast cash flow shifts, emergency buffer changes, and health score deltas.
         </p>
       </div>

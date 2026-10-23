@@ -64,8 +64,8 @@ export default function DashboardPage() {
     <div className="space-y-8">
       {/* Dashboard Top Header */}
       <div>
-        <h1 className="text-2xl font-black text-white tracking-tight">Financial Overview</h1>
-        <p className="text-xs text-slate-400 mt-1">
+        <h1 className="text-2xl font-black text-[#14251C] tracking-tight">Financial Overview</h1>
+        <p className="text-xs text-[#64736A] mt-1">
           Deterministic metrics, health score breakdown, and risk analysis.
         </p>
       </div>
@@ -74,18 +74,18 @@ export default function DashboardPage() {
       <HealthScoreCard healthScore={healthScore} />
 
       {/* Key Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <MetricCard
           title="Monthly Cash Flow"
           value={formatCurrency(metrics?.monthlyCashFlow)}
           subtitle={
             metrics?.monthlyCashFlow >= 0 ? (
-              <span className="text-emerald-400 flex items-center font-medium">
-                <ArrowUpRight className="w-3.5 h-3.5" /> Positive Surplus
+              <span className="text-[#087F5B] flex items-center font-bold">
+                <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" /> Positive Surplus
               </span>
             ) : (
-              <span className="text-rose-400 flex items-center font-medium">
-                <ArrowDownRight className="w-3.5 h-3.5" /> Monthly Deficit
+              <span className="text-[#DC2626] flex items-center font-bold">
+                <ArrowDownRight className="w-3.5 h-3.5 mr-0.5" /> Monthly Deficit
               </span>
             )
           }

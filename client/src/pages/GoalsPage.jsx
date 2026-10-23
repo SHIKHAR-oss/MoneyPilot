@@ -117,17 +117,17 @@ export default function GoalsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <Target className="w-6 h-6 text-emerald-400" />
-            <h1 className="text-2xl font-black text-white tracking-tight">Financial Goals</h1>
+            <Target className="w-6 h-6 text-[#087F5B]" />
+            <h1 className="text-2xl font-black text-[#14251C] tracking-tight">Financial Goals</h1>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-[#64736A] mt-1">
             Target savings milestones feeding your Financial Health Score calculation.
           </p>
         </div>
 
         <button
           onClick={handleOpenAdd}
-          className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all shadow-md self-start sm:self-center"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#087F5B] hover:bg-[#066649] text-white text-xs font-bold rounded-xl transition-all shadow-sm self-start sm:self-center"
         >
           <Plus className="w-4 h-4" />
           Create Goal
@@ -153,56 +153,58 @@ export default function GoalsPage() {
             return (
               <div
                 key={g._id}
-                className="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-5 shadow-xl flex flex-col justify-between space-y-4 backdrop-blur-sm hover:border-slate-600/80 transition-all"
+                className="bg-white border border-[#E0E8E2] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md hover:border-[#087F5B]/30 transition-all"
               >
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-sm font-bold text-white leading-snug">{g.name}</h3>
+                    <h3 className="text-sm font-bold text-[#14251C] leading-snug">{g.name}</h3>
                     <Badge variant="info" size="xs">{g.category}</Badge>
                   </div>
 
                   <div className="flex items-baseline justify-between text-xs">
-                    <span className="text-slate-400">Target Amount:</span>
-                    <span className="font-bold text-white text-sm">{formatCurrency(g.targetAmount)}</span>
+                    <span className="text-[#64736A]">Target Amount:</span>
+                    <span className="font-extrabold text-[#17251D] text-sm tabular-nums">{formatCurrency(g.targetAmount)}</span>
                   </div>
 
                   <div className="flex items-baseline justify-between text-xs">
-                    <span className="text-slate-400">Funded so far:</span>
-                    <span className="font-semibold text-emerald-400">{formatCurrency(g.currentAmount)}</span>
+                    <span className="text-[#64736A]">Funded so far:</span>
+                    <span className="font-bold text-[#087F5B] tabular-nums">{formatCurrency(g.currentAmount)}</span>
                   </div>
 
                   {/* Progress bar */}
-                  <div className="space-y-1 pt-1">
+                  <div className="space-y-1.5 pt-1">
                     <div className="flex justify-between text-[11px] font-semibold">
-                      <span className="text-slate-400">Progress</span>
-                      <span className="text-emerald-400">{pct}%</span>
+                      <span className="text-[#64736A]">Progress</span>
+                      <span className="text-[#087F5B] font-extrabold tabular-nums">{pct}%</span>
                     </div>
-                    <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-700/40">
+                    <div className="w-full bg-[#ECFDF5] h-2 rounded-full overflow-hidden border border-[#A7F3D0]/60">
                       <div
-                        className="bg-emerald-500 h-full rounded-full transition-all duration-500"
+                        className="bg-[#087F5B] h-full rounded-full transition-all duration-500"
                         style={{ width: `${pct}%` }}
                       ></div>
                     </div>
                   </div>
 
                   {g.targetDate && (
-                    <div className="flex items-center gap-1.5 text-[11px] text-slate-400 pt-1">
-                      <Calendar className="w-3.5 h-3.5" />
+                    <div className="flex items-center gap-1.5 text-[11px] text-[#859188] pt-1">
+                      <Calendar className="w-3.5 h-3.5 text-[#087F5B]" />
                       <span>Target: {new Date(g.targetDate).toLocaleDateString()}</span>
                     </div>
                   )}
                 </div>
 
-                <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-700/60">
+                <div className="flex items-center justify-end gap-1.5 pt-3 border-t border-[#E0E8E2]">
                   <button
                     onClick={() => handleOpenEdit(g)}
-                    className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-700 rounded-lg transition-colors"
+                    className="p-1.5 text-[#859188] hover:text-[#087F5B] hover:bg-[#ECFDF5] rounded-lg transition-colors"
+                    title="Edit Goal"
                   >
                     <Edit2 className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => setDeleteTargetId(g._id)}
-                    className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
+                    className="p-1.5 text-[#859188] hover:text-[#DC2626] hover:bg-[#FEF2F2] rounded-lg transition-colors"
+                    title="Delete Goal"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -215,32 +217,32 @@ export default function GoalsPage() {
 
       {/* Add / Edit Goal Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-              <h3 className="text-base font-bold text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+          <div className="bg-white border border-[#E0E8E2] rounded-2xl max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-4 animate-fadeIn">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E0E8E2]">
+              <h3 className="text-base font-extrabold text-[#14251C]">
                 {editingGoal ? 'Edit Financial Goal' : 'Create New Financial Goal'}
               </h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsModalOpen(false)} className="text-[#859188] hover:text-[#17251D] p-1 rounded-lg hover:bg-[#F4F8F5]">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleSaveGoal} className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">Goal Name</label>
+                <label className="text-xs font-bold text-[#14251C] block mb-1.5">Goal Name</label>
                 <input
                   type="text"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="e.g. Home Downpayment"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B]"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">Target Amount (₹)</label>
+                <label className="text-xs font-bold text-[#14251C] block mb-1.5">Target Amount (₹)</label>
                 <input
                   type="number"
                   min="1"
@@ -248,28 +250,28 @@ export default function GoalsPage() {
                   value={formData.targetAmount}
                   onChange={(e) => setFormData({ ...formData, targetAmount: e.target.value })}
                   placeholder="e.g. 500000"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B]"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">Current Amount Funded (₹)</label>
+                <label className="text-xs font-bold text-[#14251C] block mb-1.5">Current Amount Funded (₹)</label>
                 <input
                   type="number"
                   min="0"
                   value={formData.currentAmount}
                   onChange={(e) => setFormData({ ...formData, currentAmount: e.target.value })}
                   placeholder="e.g. 150000"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B]"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">Category</label>
+                <label className="text-xs font-bold text-[#14251C] block mb-1.5">Category</label>
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B]"
                 >
                   <option value="purchase">Purchase / Vehicle / Property</option>
                   <option value="emergency">Emergency Reserve</option>
@@ -281,27 +283,27 @@ export default function GoalsPage() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">Target Date (Optional)</label>
+                <label className="text-xs font-bold text-[#14251C] block mb-1.5">Target Date (Optional)</label>
                 <input
                   type="date"
                   value={formData.targetDate}
                   onChange={(e) => setFormData({ ...formData, targetDate: e.target.value })}
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B]"
                 />
               </div>
 
-              <div className="pt-2 flex justify-end gap-2.5">
+              <div className="pt-3 border-t border-[#E0E8E2] flex justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl"
+                  className="px-4 py-2 bg-white hover:bg-[#F4F8F5] text-[#64736A] hover:text-[#17251D] text-xs font-semibold rounded-xl border border-[#E0E8E2]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-md"
+                  className="px-5 py-2 bg-[#087F5B] hover:bg-[#066649] text-white text-xs font-bold rounded-xl shadow-sm"
                 >
                   {submitting ? 'Saving...' : editingGoal ? 'Update Goal' : 'Create Goal'}
                 </button>

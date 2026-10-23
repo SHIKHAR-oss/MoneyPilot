@@ -33,14 +33,14 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-[80vh] flex flex-col justify-center items-center px-4">
-      <div className="max-w-md w-full bg-slate-800/70 border border-slate-700/70 rounded-3xl p-8 shadow-2xl backdrop-blur-md space-y-6">
+      <div className="max-w-md w-full bg-white border border-[#E0E8E2] rounded-3xl p-8 sm:p-9 shadow-xl space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-600 flex items-center justify-center text-white mx-auto shadow-lg shadow-emerald-600/30">
+          <div className="w-12 h-12 rounded-2xl bg-[#087F5B] flex items-center justify-center text-white mx-auto shadow-md shadow-[#087F5B]/25">
             <Compass className="w-7 h-7" />
           </div>
-          <h2 className="text-2xl font-black text-white tracking-tight">Welcome to MoneyPilot</h2>
-          <p className="text-xs text-slate-400">
+          <h2 className="text-2xl font-black text-[#14251C] tracking-tight">Welcome to MoneyPilot</h2>
+          <p className="text-xs text-[#64736A]">
             AI-powered financial decision intelligence. Sign in to your account.
           </p>
         </div>
@@ -49,31 +49,31 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1.5">Email Address</label>
+            <label className="text-xs font-bold text-[#14251C] block mb-1.5">Email Address</label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+              <Mail className="w-4 h-4 text-[#859188] absolute left-3.5 top-3.5" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-[#17251D] placeholder:text-[#859188] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B]"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1.5">Password</label>
+            <label className="text-xs font-bold text-[#14251C] block mb-1.5">Password</label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+              <Lock className="w-4 h-4 text-[#859188] absolute left-3.5 top-3.5" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-[#17251D] placeholder:text-[#859188] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B]"
               />
             </div>
           </div>
@@ -81,7 +81,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-700 text-white text-sm font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 mt-2"
+            className="w-full py-3 bg-[#087F5B] hover:bg-[#066649] disabled:bg-[#D1DED5] text-white text-sm font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 mt-2"
           >
             {loading ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -94,9 +94,9 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="text-center pt-2 border-t border-slate-700/60 text-xs text-slate-400">
+        <div className="text-center pt-3 border-t border-[#E0E8E2] text-xs text-[#64736A]">
           Don't have an account?{' '}
-          <Link to="/register" className="text-emerald-400 font-semibold hover:underline">
+          <Link to="/register" className="text-[#087F5B] font-bold hover:underline">
             Create an account
           </Link>
         </div>

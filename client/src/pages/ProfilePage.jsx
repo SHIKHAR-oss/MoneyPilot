@@ -70,69 +70,69 @@ export default function ProfilePage() {
     <div className="max-w-3xl space-y-6">
       <div>
         <div className="flex items-center gap-2.5">
-          <UserCheck className="w-6 h-6 text-emerald-400" />
-          <h1 className="text-2xl font-black text-white tracking-tight">Financial Profile</h1>
+          <UserCheck className="w-6 h-6 text-[#087F5B]" />
+          <h1 className="text-2xl font-bold text-[#14251C] tracking-tight">Financial Profile</h1>
         </div>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-[#64736A] mt-1">
           Configure your baseline income, liquid savings, and risk tolerance for accurate intelligence calculations.
         </p>
       </div>
 
       {error && <ErrorMessage message={error} />}
       {success && (
-        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 flex items-center gap-2 text-emerald-300 text-xs font-semibold">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+        <div className="bg-[#ECFDF5] border border-[#A7F3D0] rounded-xl p-4 flex items-center gap-2 text-[#087F5B] text-xs font-semibold">
+          <CheckCircle2 className="w-4 h-4 text-[#087F5B]" />
           Financial profile updated successfully!
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-6 shadow-xl space-y-6 backdrop-blur-sm">
+      <form onSubmit={handleSubmit} className="bg-white border border-[#E0E8E2] rounded-2xl p-6 shadow-sm space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1.5">Monthly Base Income (₹)</label>
+            <label className="text-xs font-semibold text-[#17251D] block mb-1.5">Monthly Base Income (₹)</label>
             <input
               type="number"
               min="0"
               required
               value={profile.monthlyIncome}
               onChange={(e) => setProfile({ ...profile, monthlyIncome: e.target.value })}
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B] transition-colors"
             />
-            <span className="text-[10px] text-slate-400 mt-1 block">Your primary monthly take-home salary or cash flow.</span>
+            <span className="text-[10px] text-[#64736A] mt-1 block">Your primary monthly take-home salary or cash flow.</span>
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1.5">Liquid Savings Balance (₹)</label>
+            <label className="text-xs font-semibold text-[#17251D] block mb-1.5">Liquid Savings Balance (₹)</label>
             <input
               type="number"
               min="0"
               required
               value={profile.currentSavings}
               onChange={(e) => setProfile({ ...profile, currentSavings: e.target.value })}
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B] transition-colors"
             />
-            <span className="text-[10px] text-slate-400 mt-1 block">Available cash in savings and checking accounts.</span>
+            <span className="text-[10px] text-[#64736A] mt-1 block">Available cash in savings and checking accounts.</span>
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1.5">Dedicated Emergency Fund (₹)</label>
+            <label className="text-xs font-semibold text-[#17251D] block mb-1.5">Dedicated Emergency Fund (₹)</label>
             <input
               type="number"
               min="0"
               required
               value={profile.emergencyFund}
               onChange={(e) => setProfile({ ...profile, emergencyFund: e.target.value })}
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B] transition-colors"
             />
-            <span className="text-[10px] text-slate-400 mt-1 block">Reserves allocated strictly for unforeseen emergencies.</span>
+            <span className="text-[10px] text-[#64736A] mt-1 block">Reserves allocated strictly for unforeseen emergencies.</span>
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1.5">Risk Tolerance Profile</label>
+            <label className="text-xs font-semibold text-[#17251D] block mb-1.5">Risk Tolerance Profile</label>
             <select
               value={profile.riskProfile}
               onChange={(e) => setProfile({ ...profile, riskProfile: e.target.value })}
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B] transition-colors"
             >
               <option value="conservative">Conservative (High debt/capital preservation focus)</option>
               <option value="moderate">Moderate (Balanced wealth accumulation)</option>
@@ -141,11 +141,11 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="pt-4 border-t border-slate-700/60 flex justify-end">
+        <div className="pt-4 border-t border-[#E0E8E2] flex justify-end">
           <button
             type="submit"
             disabled={saving}
-            className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-700 text-white text-xs font-bold rounded-xl transition-all shadow-md flex items-center gap-2"
+            className="px-6 py-2.5 bg-[#087F5B] hover:bg-[#066649] disabled:bg-slate-300 text-white text-xs font-bold rounded-xl transition-all shadow-sm flex items-center gap-2"
           >
             {saving ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

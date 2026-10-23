@@ -116,17 +116,17 @@ export default function InvestmentsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <TrendingUp className="w-6 h-6 text-emerald-400" />
-            <h1 className="text-2xl font-black text-white tracking-tight">Investments & Portfolio</h1>
+            <TrendingUp className="w-6 h-6 text-[#087F5B]" />
+            <h1 className="text-2xl font-bold text-[#14251C] tracking-tight">Investments & Portfolio</h1>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-[#64736A] mt-1">
             Track asset holdings and monthly SIP contributions feeding net worth and health scoring.
           </p>
         </div>
 
         <button
           onClick={handleOpenAdd}
-          className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all shadow-md self-start sm:self-center"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#087F5B] hover:bg-[#066649] text-white text-xs font-bold rounded-xl transition-all shadow-sm self-start sm:self-center"
         >
           <Plus className="w-4 h-4" />
           Add Investment
@@ -137,22 +137,22 @@ export default function InvestmentsPage() {
 
       {/* Summary Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-5 shadow-lg flex items-center justify-between backdrop-blur-sm">
+        <div className="bg-white border border-[#E0E8E2] rounded-2xl p-5 shadow-sm flex items-center justify-between">
           <div>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Portfolio Value</span>
-            <div className="text-2xl font-extrabold text-white mt-1">{formatCurrency(totalValue)}</div>
+            <span className="text-xs font-semibold text-[#64736A] uppercase tracking-wider">Total Portfolio Value</span>
+            <div className="text-2xl font-extrabold text-[#17251D] mt-1 tabular-nums">{formatCurrency(totalValue)}</div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+          <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-200/80 flex items-center justify-center text-purple-700">
             <Wallet className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-5 shadow-lg flex items-center justify-between backdrop-blur-sm">
+        <div className="bg-white border border-[#E0E8E2] rounded-2xl p-5 shadow-sm flex items-center justify-between">
           <div>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Monthly SIP</span>
-            <div className="text-2xl font-extrabold text-emerald-400 mt-1">{formatCurrency(totalMonthlySip)}<span className="text-xs font-normal text-slate-400">/mo</span></div>
+            <span className="text-xs font-semibold text-[#64736A] uppercase tracking-wider">Total Monthly SIP</span>
+            <div className="text-2xl font-extrabold text-[#087F5B] mt-1 tabular-nums">{formatCurrency(totalMonthlySip)}<span className="text-xs font-normal text-[#64736A]">/mo</span></div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+          <div className="w-10 h-10 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0]/60 flex items-center justify-center text-[#087F5B]">
             <RefreshCw className="w-5 h-5" />
           </div>
         </div>
@@ -174,35 +174,35 @@ export default function InvestmentsPage() {
           {investments.map((inv) => (
             <div
               key={inv._id}
-              className="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-5 shadow-xl flex flex-col justify-between space-y-4 backdrop-blur-sm hover:border-slate-600/80 transition-all"
+              className="bg-white border border-[#E0E8E2] rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-[#A7F3D0] transition-all flex flex-col justify-between space-y-4"
             >
               <div className="space-y-2.5">
                 <div className="flex items-start justify-between gap-2">
-                  <h3 className="text-sm font-bold text-white leading-snug">{inv.name}</h3>
+                  <h3 className="text-sm font-bold text-[#17251D] leading-snug">{inv.name}</h3>
                   <Badge variant="purple" size="xs">{inv.type}</Badge>
                 </div>
 
                 <div className="flex items-baseline justify-between text-xs">
-                  <span className="text-slate-400">Current Value:</span>
-                  <span className="font-extrabold text-white text-sm">{formatCurrency(inv.currentValue)}</span>
+                  <span className="text-[#64736A]">Current Value:</span>
+                  <span className="font-bold text-[#17251D] text-sm tabular-nums">{formatCurrency(inv.currentValue)}</span>
                 </div>
 
                 <div className="flex items-baseline justify-between text-xs">
-                  <span className="text-slate-400">Monthly Contribution:</span>
-                  <span className="font-semibold text-emerald-400">{formatCurrency(inv.monthlyContribution || 0)}/mo</span>
+                  <span className="text-[#64736A]">Monthly Contribution:</span>
+                  <span className="font-semibold text-[#087F5B] tabular-nums">{formatCurrency(inv.monthlyContribution || 0)}/mo</span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-700/60">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#E0E8E2]">
                 <button
                   onClick={() => handleOpenEdit(inv)}
-                  className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-700 rounded-lg transition-colors"
+                  className="p-1.5 text-[#64736A] hover:text-[#087F5B] hover:bg-[#ECFDF5] rounded-lg transition-colors"
                 >
                   <Edit2 className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={() => setDeleteTargetId(inv._id)}
-                  className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
+                  className="p-1.5 text-[#64736A] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
@@ -214,44 +214,44 @@ export default function InvestmentsPage() {
 
       {/* Add / Edit Investment Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-              <h3 className="text-base font-bold text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+          <div className="bg-white border border-[#E0E8E2] rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E0E8E2]">
+              <h3 className="text-base font-bold text-[#14251C]">
                 {editingInv ? 'Edit Investment Asset' : 'Add Investment Asset'}
               </h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsModalOpen(false)} className="text-[#64736A] hover:text-[#17251D] transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleSaveInvestment} className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">Asset Name</label>
+                <label className="text-xs font-semibold text-[#17251D] block mb-1.5">Asset Name</label>
                 <input
                   type="text"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="e.g. Nifty 50 Index Fund"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B] transition-colors"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">Asset Type</label>
+                <label className="text-xs font-semibold text-[#17251D] block mb-1.5">Asset Type</label>
                 <input
                   type="text"
                   required
                   value={formData.type}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                   placeholder="e.g. Mutual Fund, Stocks, Gold, Fixed Deposit, Crypto"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B] transition-colors"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">Current Value (₹)</label>
+                <label className="text-xs font-semibold text-[#17251D] block mb-1.5">Current Value (₹)</label>
                 <input
                   type="number"
                   min="0"
@@ -259,12 +259,12 @@ export default function InvestmentsPage() {
                   value={formData.currentValue}
                   onChange={(e) => setFormData({ ...formData, currentValue: e.target.value })}
                   placeholder="e.g. 250000"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B] transition-colors"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">
+                <label className="text-xs font-semibold text-[#17251D] block mb-1.5">
                   Monthly SIP / Recurring Addition (₹)
                 </label>
                 <input
@@ -273,7 +273,7 @@ export default function InvestmentsPage() {
                   value={formData.monthlyContribution}
                   onChange={(e) => setFormData({ ...formData, monthlyContribution: e.target.value })}
                   placeholder="e.g. 10000"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B] transition-colors"
                 />
               </div>
 
@@ -281,14 +281,14 @@ export default function InvestmentsPage() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl"
+                  className="px-4 py-2 border border-[#E0E8E2] bg-white hover:bg-[#F4F8F5] text-[#64736A] hover:text-[#17251D] text-xs font-semibold rounded-xl transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-md"
+                  className="px-5 py-2 bg-[#087F5B] hover:bg-[#066649] text-white text-xs font-bold rounded-xl shadow-sm transition-colors"
                 >
                   {submitting ? 'Saving...' : editingInv ? 'Update Investment' : 'Save Investment'}
                 </button>

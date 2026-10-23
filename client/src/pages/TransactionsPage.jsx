@@ -126,17 +126,17 @@ export default function TransactionsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <Receipt className="w-6 h-6 text-emerald-400" />
-            <h1 className="text-2xl font-black text-white tracking-tight">Transactions Ledger</h1>
+            <Receipt className="w-6 h-6 text-[#087F5B]" />
+            <h1 className="text-2xl font-black text-[#14251C] tracking-tight">Transactions Ledger</h1>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-[#64736A] mt-1">
             Record actual income and expense cash movements feeding the deterministic engine.
           </p>
         </div>
 
         <button
           onClick={handleOpenAdd}
-          className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all shadow-md self-start sm:self-center"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#087F5B] hover:bg-[#066649] text-white text-xs font-bold rounded-xl transition-all shadow-sm self-start sm:self-center"
         >
           <Plus className="w-4 h-4" />
           Add Transaction
@@ -146,27 +146,27 @@ export default function TransactionsPage() {
       {error && <ErrorMessage message={error} onRetry={fetchTransactions} />}
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+      <div className="flex items-center gap-2 border-b border-[#E0E8E2] pb-3">
         <button
           onClick={() => setFilterType('')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-            filterType === '' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-slate-200'
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            filterType === '' ? 'bg-[#087F5B] text-white shadow-xs' : 'bg-white text-[#64736A] hover:text-[#17251D] border border-[#E0E8E2]'
           }`}
         >
           All Transactions
         </button>
         <button
           onClick={() => setFilterType('income')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-            filterType === 'income' ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/30' : 'text-slate-400 hover:text-slate-200'
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            filterType === 'income' ? 'bg-[#ECFDF5] text-[#087F5B] border border-[#A7F3D0] shadow-xs' : 'bg-white text-[#64736A] hover:text-[#087F5B] border border-[#E0E8E2]'
           }`}
         >
           Income Only
         </button>
         <button
           onClick={() => setFilterType('expense')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-            filterType === 'expense' ? 'bg-rose-600/30 text-rose-300 border border-rose-500/30' : 'text-slate-400 hover:text-slate-200'
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            filterType === 'expense' ? 'bg-[#FEF2F2] text-[#DC2626] border border-[#FECACA] shadow-xs' : 'bg-white text-[#64736A] hover:text-[#DC2626] border border-[#E0E8E2]'
           }`}
         >
           Expenses Only
@@ -185,11 +185,11 @@ export default function TransactionsPage() {
           onAction={handleOpenAdd}
         />
       ) : (
-        <div className="bg-slate-800/60 border border-slate-700/60 rounded-2xl overflow-hidden shadow-xl backdrop-blur-sm">
+        <div className="bg-white border border-[#E0E8E2] rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-700/60 bg-slate-900/40 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                <tr className="border-b border-[#E0E8E2] bg-[#F4F8F5] text-[11px] font-bold text-[#64736A] uppercase tracking-wider">
                   <th className="py-3 px-4">Type</th>
                   <th className="py-3 px-4">Category</th>
                   <th className="py-3 px-4">Description</th>
@@ -198,17 +198,17 @@ export default function TransactionsPage() {
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 text-xs">
+              <tbody className="divide-y divide-[#E0E8E2] text-xs">
                 {transactions.map((tx) => (
-                  <tr key={tx._id} className="hover:bg-slate-700/20 transition-colors">
+                  <tr key={tx._id} className="hover:bg-[#F4F8F5]/60 transition-colors">
                     <td className="py-3 px-4 font-semibold">
                       <Badge variant={tx.type === 'income' ? 'success' : 'danger'} size="xs">
                         {tx.type === 'income' ? 'Income' : 'Expense'}
                       </Badge>
                     </td>
-                    <td className="py-3 px-4 font-bold text-white">{tx.category}</td>
-                    <td className="py-3 px-4 text-slate-300">{tx.description || '—'}</td>
-                    <td className="py-3 px-4 text-slate-400">
+                    <td className="py-3 px-4 font-bold text-[#14251C]">{tx.category}</td>
+                    <td className="py-3 px-4 text-[#64736A]">{tx.description || '—'}</td>
+                    <td className="py-3 px-4 text-[#859188] tabular-nums">
                       {new Date(tx.date).toLocaleDateString(undefined, {
                         year: 'numeric',
                         month: 'short',
@@ -216,22 +216,24 @@ export default function TransactionsPage() {
                       })}
                     </td>
                     <td
-                      className={`py-3 px-4 text-right font-extrabold text-sm ${
-                        tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'
+                      className={`py-3 px-4 text-right font-black text-sm tabular-nums ${
+                        tx.type === 'income' ? 'text-[#087F5B]' : 'text-[#DC2626]'
                       }`}
                     >
                       {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
                     </td>
-                    <td className="py-3 px-4 text-right space-x-2">
+                    <td className="py-3 px-4 text-right space-x-1.5">
                       <button
                         onClick={() => handleOpenEdit(tx)}
-                        className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-700 rounded-lg transition-colors"
+                        className="p-1.5 text-[#859188] hover:text-[#087F5B] hover:bg-[#ECFDF5] rounded-lg transition-colors"
+                        title="Edit Transaction"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => setDeleteTargetId(tx._id)}
-                        className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
+                        className="p-1.5 text-[#859188] hover:text-[#DC2626] hover:bg-[#FEF2F2] rounded-lg transition-colors"
+                        title="Delete Transaction"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -246,28 +248,28 @@ export default function TransactionsPage() {
 
       {/* Add / Edit Transaction Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-              <h3 className="text-base font-bold text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+          <div className="bg-white border border-[#E0E8E2] rounded-2xl max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-4 animate-fadeIn">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E0E8E2]">
+              <h3 className="text-base font-extrabold text-[#14251C]">
                 {editingTx ? 'Edit Transaction' : 'Record New Transaction'}
               </h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsModalOpen(false)} className="text-[#859188] hover:text-[#17251D] p-1 rounded-lg hover:bg-[#F4F8F5]">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleSaveTransaction} className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">Type</label>
+                <label className="text-xs font-bold text-[#14251C] block mb-1.5">Type</label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => setFormData({ ...formData, type: 'expense' })}
                     className={`py-2 rounded-xl text-xs font-bold border transition-all ${
                       formData.type === 'expense'
-                        ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                        : 'bg-slate-800 text-slate-400 border-slate-700'
+                        ? 'bg-[#FEF2F2] text-[#DC2626] border-[#FECACA] shadow-xs'
+                        : 'bg-[#FAFCFA] text-[#64736A] border-[#E0E8E2]'
                     }`}
                   >
                     Expense
@@ -277,8 +279,8 @@ export default function TransactionsPage() {
                     onClick={() => setFormData({ ...formData, type: 'income' })}
                     className={`py-2 rounded-xl text-xs font-bold border transition-all ${
                       formData.type === 'income'
-                        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                        : 'bg-slate-800 text-slate-400 border-slate-700'
+                        ? 'bg-[#ECFDF5] text-[#087F5B] border-[#A7F3D0] shadow-xs'
+                        : 'bg-[#FAFCFA] text-[#64736A] border-[#E0E8E2]'
                     }`}
                   >
                     Income
@@ -287,7 +289,7 @@ export default function TransactionsPage() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">Amount (₹)</label>
+                <label className="text-xs font-bold text-[#14251C] block mb-1.5">Amount (₹)</label>
                 <input
                   type="number"
                   min="0.01"
@@ -296,56 +298,56 @@ export default function TransactionsPage() {
                   value={formData.amount}
                   onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                   placeholder="e.g. 2500"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B]"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">Category</label>
+                <label className="text-xs font-bold text-[#14251C] block mb-1.5">Category</label>
                 <input
                   type="text"
                   required
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   placeholder="e.g. Groceries, Rent, Salary, Freelance"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B]"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">Description (Optional)</label>
+                <label className="text-xs font-bold text-[#14251C] block mb-1.5">Description (Optional)</label>
                 <input
                   type="text"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="e.g. Supermarket weekly haul"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B]"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">Date</label>
+                <label className="text-xs font-bold text-[#14251C] block mb-1.5">Date</label>
                 <input
                   type="date"
                   required
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#FAFCFA] border border-[#E0E8E2] rounded-xl px-3.5 py-2.5 text-sm text-[#17251D] focus:outline-none focus:border-[#087F5B] focus:ring-1 focus:ring-[#087F5B]"
                 />
               </div>
 
-              <div className="pt-2 flex justify-end gap-2.5">
+              <div className="pt-3 border-t border-[#E0E8E2] flex justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl"
+                  className="px-4 py-2 bg-white hover:bg-[#F4F8F5] text-[#64736A] hover:text-[#17251D] text-xs font-semibold rounded-xl border border-[#E0E8E2]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-md"
+                  className="px-5 py-2 bg-[#087F5B] hover:bg-[#066649] text-white text-xs font-bold rounded-xl shadow-sm"
                 >
                   {submitting ? 'Saving...' : editingTx ? 'Update Transaction' : 'Create Transaction'}
                 </button>

@@ -2,23 +2,23 @@ import React from 'react';
 
 export default function Badge({ children, variant = 'default', size = 'sm' }) {
   const variantStyles = {
-    default: 'bg-slate-700/50 text-slate-300 border-slate-600/40',
-    success: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-    warning: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-    danger: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
-    info: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-    purple: 'bg-purple-500/10 text-purple-400 border-purple-500/20'
+    default: 'bg-[#F4F8F5] text-[#64736A] border-[#E0E8E2]',
+    success: 'bg-[#ECFDF5] text-[#087F5B] border-[#A7F3D0]',
+    warning: 'bg-[#FEF3C7] text-[#B45309] border-[#FDE68A]',
+    danger: 'bg-[#FEF2F2] text-[#DC2626] border-[#FECACA]',
+    info: 'bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]',
+    purple: 'bg-[#F5F3FF] text-[#7C3AED] border-[#DDD6FE]'
   };
 
   const sizeStyles = {
-    xs: 'px-2 py-0.5 text-xs',
-    sm: 'px-2.5 py-1 text-xs',
-    md: 'px-3 py-1.5 text-sm'
+    xs: 'px-2 py-0.5 text-[11px] font-semibold',
+    sm: 'px-2.5 py-1 text-xs font-semibold',
+    md: 'px-3 py-1.5 text-sm font-semibold'
   };
 
   return (
     <span
-      className={`inline-flex items-center font-medium rounded-full border ${variantStyles[variant] || variantStyles.default} ${sizeStyles[size] || sizeStyles.sm}`}
+      className={`inline-flex items-center rounded-full border tracking-wide ${variantStyles[variant] || variantStyles.default} ${sizeStyles[size] || sizeStyles.sm}`}
     >
       {children}
     </span>
