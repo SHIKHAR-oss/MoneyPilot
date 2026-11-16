@@ -135,10 +135,12 @@ export const api = {
     run: (decision) => api.post('/simulations/run', decision)
   },
 
-  // AI Explanation APIs
+  // AI Explanation & Assistant APIs
   ai: {
     explainOverview: () => api.post('/ai/explain-overview'),
-    explainSimulation: (decision) => api.post('/ai/explain-simulation', decision)
+    explainSimulation: (decision) => api.post('/ai/explain-simulation', decision),
+    askAssistant: (question, conversationHistory = []) =>
+      api.post('/ai/assistant', { question, conversationHistory })
   }
 };
 

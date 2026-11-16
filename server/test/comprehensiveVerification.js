@@ -7,6 +7,7 @@ import { detectBaselineRisks, detectSimulationRisks } from '../src/engines/riskE
 import { parseJsonSafely, validateOverviewExplanation, validateSimulationExplanation, getFallbackOverviewExplanation } from '../src/utils/aiResponseValidator.js';
 import { generateToken, verifyToken } from '../src/utils/jwt.js';
 import { isValidObjectId, isSafeNumber, isNonNegativeNumber, isPositiveNumber } from '../src/utils/validationHelpers.js';
+import { buildSanitizedFinancialContext, generateFallbackAssistantResponse } from '../src/services/aiAssistantService.js';
 
 let totalTests = 0;
 let passedTests = 0;
@@ -373,6 +374,90 @@ runTest('isSafeNumber & isPositiveNumber: Validates numbers accurately', () => {
   assert.strictEqual(isPositiveNumber(50), true);
   assert.strictEqual(isPositiveNumber(0), false);
   assert.strictEqual(isPositiveNumber(-10), false);
+});
+
+// -------------------------------------------------------------
+// 9. AI Assistant Data Minimization & Fallback Engine
+// -------------------------------------------------------------
+console.log('\n9. AI Assistant Data Minimization & Fallback Engine:');
+
+runTest('buildSanitizedFinancialContext: Strips passwords, raw IDs, and minimizes data', () => {
+  const mockMetrics = {
+    monthlyIncome: 100000,
+    monthlyExpenses: 60000,
+    monthlyCashFlow: 40000,
+    savingsRate: 40,
+    expenseToIncomeRatio: 60,
+    emergencyFundCoverage: 5,
+    currentSavings: 200000,
+    emergencyFund: 300000,
+    totalInvestmentValue: 500000,
+    netWorth: 700000
+  };
+  const mockHealthScore = { score: 78, rating: 'Good', components: { savings: { score: 18 } } };
+  const mockRisks = [{ severity: 'LOW', title: 'Healthy Status', explanation: 'All good' }];
+  const mockBreakdown = {
+    profile: { userId: '507f1f77bcf86cd799439011', riskProfile: 'moderate', password: 'secret_password_should_not_pass' },
+    ledger: { expensesByCategory: { Rent: 25000, Food: 15000 } },
+    investments: { items: [{ name: 'Index Fund', type: 'Mutual Fund', currentValue: 500000, monthlyContribution: 10000 }] },
+    goals: { items: [{ name: 'Emergency Fund', targetAmount: 300000, currentAmount: 300000 }] }
+  };
+
+  const context = buildSanitizedFinancialContext({
+    metrics: mockMetrics,
+    healthScore: mockHealthScore,
+    risks: mockRisks,
+    breakdown: mockBreakdown
+  });
+
+  assert.ok(context.cashFlowSummary);
+  assert.ok(context.reservesAndAssets);
+  assert.ok(context.healthScoreOverview);
+  assert.strictEqual(context.cashFlowSummary.monthlyIncome, 100000);
+  assert.strictEqual(context.cashFlowSummary.savingsRate, '40%');
+  assert.strictEqual(context.topExpenses[0].category, 'Rent');
+
+  const serialized = JSON.stringify(context);
+  assert.strictEqual(serialized.includes('secret_password_should_not_pass'), false);
+  assert.strictEqual(serialized.includes('507f1f77bcf86cd799439011'), false);
+});
+
+runTest('generateFallbackAssistantResponse: Returns structured, verified guidance with disclaimer', () => {
+  const mockContext = {
+    cashFlowSummary: {
+      monthlyIncome: 80000,
+      monthlyExpenses: 40000,
+      monthlyCashFlow: 40000,
+      savingsRate: '50%',
+      expenseToIncomeRatio: '50%',
+      emergencyFundCoverage: '6 months of expenses'
+    },
+    reservesAndAssets: {
+      liquidSavings: 150000,
+      dedicatedEmergencyFund: 240000,
+      netWorth: 390000
+    },
+    healthScoreOverview: {
+      totalScore: 82,
+      rating: 'Excellent',
+      components: { savings: { score: 20 }, buffer: { score: 18 } }
+    },
+    topExpenses: [{ category: 'Housing', amount: 20000, percentageOfExpenses: '50%' }],
+    detectedRisks: []
+  };
+
+  const resHealth = generateFallbackAssistantResponse('Why is my health score high?', mockContext);
+  assert.ok(resHealth.answer.includes('82/100'));
+  assert.ok(Array.isArray(resHealth.calculatedFacts));
+  assert.ok(Array.isArray(resHealth.suggestions));
+  assert.ok(resHealth.disclaimer.length > 0);
+
+  const resSpend = generateFallbackAssistantResponse('Where am I spending the most?', mockContext);
+  assert.ok(resSpend.answer.includes('Housing'));
+  assert.ok(resSpend.calculatedFacts.length > 0);
+
+  const resSave = generateFallbackAssistantResponse('How much should I save?', mockContext);
+  assert.ok(resSave.answer.includes('50%'));
 });
 
 // -------------------------------------------------------------

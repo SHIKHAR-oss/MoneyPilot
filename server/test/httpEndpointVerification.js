@@ -126,6 +126,41 @@ server.listen(5099, async () => {
       const res = await fetch(`${BASE}/health`, { redirect: 'manual' });
       logTest('GET /health: Redirects to /api/health', res.status === 302 || res.status === 301);
     }
+
+    // 11. HTTP Security Headers Check
+    {
+      const res = await fetch(`${BASE}/api/health`);
+      const hasNosniff = res.headers.get('x-content-type-options') === 'nosniff';
+      const hasDenyFrame = res.headers.get('x-frame-options') === 'DENY';
+      const hasReferrer = Boolean(res.headers.get('referrer-policy'));
+      logTest('Security Headers: X-Content-Type-Options, X-Frame-Options, and Referrer-Policy present', hasNosniff && hasDenyFrame && hasReferrer);
+    }
+
+    // 12. AI Assistant Endpoint Authentication Protection
+    {
+      const res = await fetch(`${BASE}/api/ai/assistant`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: 'How is my financial health?' })
+      });
+      const data = await res.json();
+      logTest('POST /api/ai/assistant without token: Returns 401 AUTH_TOKEN_MISSING', res.status === 401 && data.code === 'AUTH_TOKEN_MISSING');
+    }
+
+    // 13. AI Assistant Input Validation / DB Protection
+    {
+      const res = await fetch(`${BASE}/api/ai/assistant`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${testToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ question: '' })
+      });
+      const data = await res.json();
+      const isExpected = res.status === 503 ? data.code === 'DB_UNAVAILABLE' : (res.status === 400 && data.code === 'INVALID_INPUT');
+      logTest('POST /api/ai/assistant validation: Handled safely (503 DB_UNAVAILABLE or 400 INVALID_INPUT)', isExpected);
+    }
   } catch (err) {
     console.error('HTTP Test Execution Error:', err);
   } finally {

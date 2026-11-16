@@ -1,8 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import routes from './routes/index.js';
+import securityHeaders from './middleware/securityHeadersMiddleware.js';
 
 const app = express();
+
+// HTTP Security Headers
+app.use(securityHeaders);
 
 // Security & Cross-Origin Configuration
 const getAllowedOrigins = () => {

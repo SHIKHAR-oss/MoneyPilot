@@ -4,6 +4,7 @@ import { calculateFinancialHealthScore } from '../engines/healthScoreEngine.js';
 import { detectBaselineRisks } from '../engines/riskEngine.js';
 import { simulateFinancialDecision } from '../engines/simulationEngine.js';
 import { explainFinancialOverview, explainSimulation } from '../services/aiExplanationService.js';
+import { answerFinancialQuestion } from '../services/aiAssistantService.js';
 
 const VALID_DECISION_TYPES = [
   'ONE_TIME_EXPENSE',
@@ -144,7 +145,77 @@ export const explainSimulationDecision = async (req, res) => {
   }
 };
 
+/**
+ * Handle conversational AI financial assistant question
+ * @route POST /api/ai/assistant
+ */
+export const askAssistant = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { question, message, conversationHistory } = req.body;
+    const userPrompt = (question || message || '').trim();
+
+    if (!userPrompt) {
+      return res.status(400).json({
+        status: 'error',
+        code: 'INVALID_INPUT',
+        message: 'Question or message is required and cannot be empty.'
+      });
+    }
+
+    if (userPrompt.length > 500) {
+      return res.status(400).json({
+        status: 'error',
+        code: 'QUERY_TOO_LONG',
+        message: 'Question cannot exceed 500 characters.'
+      });
+    }
+
+    // 1. Deterministic Data Aggregation (strictly for current user)
+    const financialData = await getUserFinancialData(userId);
+
+    // 2. Deterministic Engines
+    const metrics = calculateFinancialMetrics(financialData);
+    const healthScore = calculateFinancialHealthScore(metrics, financialData);
+    const risks = detectBaselineRisks(metrics, healthScore);
+
+    // 3. AI Assistant Service
+    const result = await answerFinancialQuestion({
+      question: userPrompt,
+      conversationHistory: Array.isArray(conversationHistory) ? conversationHistory : [],
+      metrics,
+      healthScore,
+      risks,
+      breakdown: {
+        profile: financialData.profile,
+        ledger: financialData.ledger,
+        investments: financialData.investments,
+        goals: financialData.goals
+      }
+    });
+
+    return res.status(200).json({
+      status: 'success',
+      data: {
+        answer: result.response.answer,
+        calculatedFacts: result.response.calculatedFacts,
+        suggestions: result.response.suggestions,
+        disclaimer: result.response.disclaimer,
+        source: result.source,
+        fallbackNotice: result.fallbackNotice || null
+      }
+    });
+  } catch (error) {
+    console.error('[AI Controller - Assistant Error]:', error);
+    return res.status(500).json({
+      status: 'error',
+      message: error.message || 'Error processing AI Assistant query.'
+    });
+  }
+};
+
 export default {
   explainOverview,
-  explainSimulationDecision
+  explainSimulationDecision,
+  askAssistant
 };

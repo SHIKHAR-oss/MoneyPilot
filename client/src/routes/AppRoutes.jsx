@@ -3,7 +3,9 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout.jsx';
 import HomePage from '../pages/HomePage.jsx';
 import DashboardPage from '../pages/DashboardPage.jsx';
+import AIAssistantPage from '../pages/AIAssistantPage.jsx';
 import ProfilePage from '../pages/ProfilePage.jsx';
+import PrivacySecurityPage from '../pages/PrivacySecurityPage.jsx';
 import TransactionsPage from '../pages/TransactionsPage.jsx';
 import GoalsPage from '../pages/GoalsPage.jsx';
 import InvestmentsPage from '../pages/InvestmentsPage.jsx';
@@ -31,7 +33,9 @@ export default function AppRoutes() {
         {/* Protected Dashboard & Intelligence Routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/assistant" element={<AIAssistantPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/security" element={<PrivacySecurityPage />} />
           <Route path="/transactions" element={<TransactionsPage />} />
           <Route path="/goals" element={<GoalsPage />} />
           <Route path="/investments" element={<InvestmentsPage />} />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { UserCheck, Save, CheckCircle2, ShieldAlert } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { UserCheck, Save, CheckCircle2, ShieldCheck, ShieldAlert } from 'lucide-react';
 import api from '../services/api.js';
 import LoadingSpinner from '../components/common/LoadingSpinner.jsx';
 import ErrorMessage from '../components/common/ErrorMessage.jsx';
@@ -85,6 +86,29 @@ export default function ProfilePage() {
           Financial profile updated successfully!
         </div>
       )}
+
+      {/* Privacy & Security Center Link Card */}
+      <div className="bg-white border border-[#E0E8E2] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm hover:border-[#A7F3D0] transition-colors">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] flex items-center justify-center text-[#087F5B] shrink-0">
+            <ShieldCheck className="w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="text-xs sm:text-sm font-bold text-[#14251C]">
+              Privacy & Data Security Center
+            </h3>
+            <p className="text-[11px] text-[#64736A]">
+              Review how MoneyPilot hashes passwords, isolates accounts, and minimizes AI data.
+            </p>
+          </div>
+        </div>
+        <Link
+          to="/security"
+          className="px-4 py-2 bg-[#ECFDF5] hover:bg-[#D1FAE5] text-[#087F5B] hover:text-[#066649] text-xs font-bold rounded-xl border border-[#A7F3D0] transition-all shadow-2xs self-start sm:self-center shrink-0"
+        >
+          View Security Status
+        </Link>
+      </div>
 
       <form onSubmit={handleSubmit} className="bg-white border border-[#E0E8E2] rounded-2xl p-6 shadow-sm space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">

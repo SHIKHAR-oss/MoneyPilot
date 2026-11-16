@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
+  Sparkles,
   UserCheck,
   Receipt,
   Target,
   TrendingUp,
   SlidersHorizontal,
+  ShieldCheck,
   LogOut,
   Menu,
   X,
@@ -27,11 +29,13 @@ export default function MainLayout() {
 
   const navItems = [
     { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { to: '/assistant', label: 'AI Assistant', icon: Sparkles },
     { to: '/profile', label: 'Financial Profile', icon: UserCheck },
     { to: '/transactions', label: 'Transactions', icon: Receipt },
     { to: '/goals', label: 'Financial Goals', icon: Target },
     { to: '/investments', label: 'Investments', icon: TrendingUp },
-    { to: '/simulate', label: 'Decision Simulator', icon: SlidersHorizontal }
+    { to: '/simulate', label: 'Decision Simulator', icon: SlidersHorizontal },
+    { to: '/security', label: 'Data & Security', icon: ShieldCheck }
   ];
 
   const getNavLinkClass = ({ isActive }) =>
