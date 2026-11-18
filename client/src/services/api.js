@@ -3,7 +3,27 @@
  * Configured with environment variables, localStorage token persistence, and full REST endpoint catalog
  */
 
-const rawBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+const getApiBaseUrl = () => {
+  // 1. Explicit environment variable takes precedence
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+
+  // 2. Production build mode or non-localhost domain (e.g. Render, Vercel)
+  if (
+    import.meta.env.PROD ||
+    (typeof window !== 'undefined' &&
+      window.location.hostname !== 'localhost' &&
+      window.location.hostname !== '127.0.0.1')
+  ) {
+    return 'https://moneypilot-api.onrender.com/api';
+  }
+
+  // 3. Local development default
+  return 'http://localhost:5000/api';
+};
+
+const rawBaseUrl = getApiBaseUrl();
 const BASE_URL = rawBaseUrl.replace(/\/+$/, '');
 
 const getAuthHeaders = () => {
@@ -141,6 +161,12 @@ export const api = {
     explainSimulation: (decision) => api.post('/ai/explain-simulation', decision),
     askAssistant: (question, conversationHistory = []) =>
       api.post('/ai/assistant', { question, conversationHistory })
+  },
+
+  // Real Financial News APIs
+  news: {
+    get: (category = 'All') => api.get(`/news?category=${encodeURIComponent(category)}`),
+    personalize: (article) => api.post('/news/personalize', { article })
   }
 };
 

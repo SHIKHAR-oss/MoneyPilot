@@ -8,6 +8,7 @@ import investmentRoutes from './investmentRoutes.js';
 import financialRoutes from './financialRoutes.js';
 import simulationRoutes from './simulationRoutes.js';
 import aiRoutes from './aiRoutes.js';
+import newsRoutes from './newsRoutes.js';
 
 const router = Router();
 
@@ -29,5 +30,8 @@ router.use('/simulations', simulationRoutes);
 
 // AI Explanation routes
 router.use('/ai', aiRoutes);
+
+// Real Financial News routes
+router.use('/news', newsRoutes);
 
 export default router;

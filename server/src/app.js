@@ -10,9 +10,14 @@ app.use(securityHeaders);
 
 // Security & Cross-Origin Configuration
 const getAllowedOrigins = () => {
+  const defaultOrigins = [
+    'http://localhost:5173',
+    'https://moneypilot-s3g4.onrender.com'
+  ];
   const envOrigins = process.env.CLIENT_URL;
-  if (!envOrigins) return ['http://localhost:5173'];
-  return envOrigins.split(',').map((o) => o.trim()).filter(Boolean);
+  if (!envOrigins) return defaultOrigins;
+  const configured = envOrigins.split(',').map((o) => o.trim()).filter(Boolean);
+  return Array.from(new Set([...defaultOrigins, ...configured]));
 };
 
 app.use(

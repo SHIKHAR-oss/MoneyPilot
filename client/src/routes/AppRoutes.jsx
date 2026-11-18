@@ -4,6 +4,7 @@ import MainLayout from '../layouts/MainLayout.jsx';
 import HomePage from '../pages/HomePage.jsx';
 import DashboardPage from '../pages/DashboardPage.jsx';
 import AIAssistantPage from '../pages/AIAssistantPage.jsx';
+import NewsPage from '../pages/NewsPage.jsx';
 import ProfilePage from '../pages/ProfilePage.jsx';
 import PrivacySecurityPage from '../pages/PrivacySecurityPage.jsx';
 import TransactionsPage from '../pages/TransactionsPage.jsx';
@@ -34,6 +35,7 @@ export default function AppRoutes() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/assistant" element={<AIAssistantPage />} />
+          <Route path="/news" element={<NewsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/security" element={<PrivacySecurityPage />} />
           <Route path="/transactions" element={<TransactionsPage />} />

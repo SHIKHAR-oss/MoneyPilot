@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Sparkles,
+  Newspaper,
   UserCheck,
   Receipt,
   Target,
@@ -30,6 +31,7 @@ export default function MainLayout() {
   const navItems = [
     { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/assistant', label: 'AI Assistant', icon: Sparkles },
+    { to: '/news', label: 'Financial News', icon: Newspaper },
     { to: '/profile', label: 'Financial Profile', icon: UserCheck },
     { to: '/transactions', label: 'Transactions', icon: Receipt },
     { to: '/goals', label: 'Financial Goals', icon: Target },

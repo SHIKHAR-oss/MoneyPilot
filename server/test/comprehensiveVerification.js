@@ -8,6 +8,7 @@ import { parseJsonSafely, validateOverviewExplanation, validateSimulationExplana
 import { generateToken, verifyToken } from '../src/utils/jwt.js';
 import { isValidObjectId, isSafeNumber, isNonNegativeNumber, isPositiveNumber } from '../src/utils/validationHelpers.js';
 import { buildSanitizedFinancialContext, generateFallbackAssistantResponse } from '../src/services/aiAssistantService.js';
+import { parseRssFeedXml, cleanHtmlText, synthesizeFallbackPersonalization, NEWS_CATEGORIES } from '../src/services/newsService.js';
 
 let totalTests = 0;
 let passedTests = 0;
@@ -458,6 +459,110 @@ runTest('generateFallbackAssistantResponse: Returns structured, verified guidanc
 
   const resSave = generateFallbackAssistantResponse('How much should I save?', mockContext);
   assert.ok(resSave.answer.includes('50%'));
+});
+
+// -------------------------------------------------------------
+// 10. Financial News Provider, Normalization & Personalization Tests
+// -------------------------------------------------------------
+console.log('\n10. Financial News Provider, Normalization & Personalization:');
+
+runTest('cleanHtmlText: Removes CDATA, HTML tags, and decodes entities', () => {
+  const dirty = '<![CDATA[Stock &amp; Bond Market &quot;Rallies&quot; &lt;today&gt;]]> <p>Details here.</p>';
+  const cleaned = cleanHtmlText(dirty);
+  assert.strictEqual(cleaned, 'Stock & Bond Market "Rallies" <today> Details here.');
+});
+
+runTest('parseRssFeedXml: Parses valid items, formats dates, and generates deterministic IDs', () => {
+  const mockXml = `
+    <rss version="2.0">
+      <channel>
+        <item>
+          <title><![CDATA[Sensex surges 400 pts on Banking gains - The Economic Times]]></title>
+          <link>https://economictimes.indiatimes.com/markets/stocks/news/sample-article</link>
+          <pubDate>Mon, 16 Nov 2026 10:30:00 GMT</pubDate>
+          <source url="https://economictimes.indiatimes.com">The Economic Times</source>
+          <description><![CDATA[Indian benchmark equity indices rallied on Monday led by financial stocks.]]></description>
+        </item>
+      </channel>
+    </rss>
+  `;
+
+  const articles = parseRssFeedXml(mockXml, 'Market');
+  assert.strictEqual(articles.length, 1);
+  assert.strictEqual(articles[0].title, 'Sensex surges 400 pts on Banking gains');
+  assert.strictEqual(articles[0].source, 'The Economic Times');
+  assert.strictEqual(articles[0].link, 'https://economictimes.indiatimes.com/markets/stocks/news/sample-article');
+  assert.strictEqual(articles[0].category, 'Market');
+  assert.ok(articles[0].id.length > 0);
+  assert.ok(articles[0].publishedAt.includes('2026'));
+  assert.ok(articles[0].description.includes('Indian benchmark equity indices'));
+});
+
+runTest('parseRssFeedXml: Deduplicates repeated articles and ignores malformed items', () => {
+  const duplicateXml = `
+    <rss version="2.0">
+      <channel>
+        <item>
+          <title>RBI Keeps Repo Rate Unchanged at 6.5% - Livemint</title>
+          <link>https://www.livemint.com/economy/rbi-rate-decision-2026</link>
+        </item>
+        <item>
+          <title>RBI Keeps Repo Rate Unchanged at 6.5% - Livemint</title>
+          <link>https://www.livemint.com/economy/rbi-rate-decision-2026?source=feed</link>
+        </item>
+        <item>
+          <!-- Missing link -->
+          <title>Incomplete Story Without URL</title>
+        </item>
+      </channel>
+    </rss>
+  `;
+
+  const articles = parseRssFeedXml(duplicateXml, 'RBI');
+  assert.strictEqual(articles.length, 1);
+  assert.strictEqual(articles[0].title, 'RBI Keeps Repo Rate Unchanged at 6.5%');
+  assert.strictEqual(articles[0].source, 'Livemint');
+});
+
+runTest('synthesizeFallbackPersonalization: Generates structured impact anchored in user numbers', () => {
+  const mockUserSummary = {
+    healthScore: { score: 75, rating: 'Good' },
+    cashFlow: { monthlyIncome: 90000, monthlyExpenses: 50000, monthlyCashFlow: 40000, savingsRate: '44%', expenseToIncomeRatio: '56%' },
+    reserves: { liquidSavings: 200000, emergencyFund: 300000, emergencyCoverage: '6 months' },
+    investments: { totalValue: 450000, totalMonthlySIP: 15000 },
+    goals: { totalCount: 3 },
+    riskProfile: 'moderate'
+  };
+
+  const article = {
+    title: 'RBI MPC Meeting: Repo rate decision and liquidity framework',
+    category: 'RBI',
+    source: 'Financial Express'
+  };
+
+  const impact = synthesizeFallbackPersonalization({ article, userFinancialSummary: mockUserSummary });
+  assert.ok(impact.impactAnalysis.includes('₹2,00,000'));
+  assert.ok(impact.impactAnalysis.includes('moderate'));
+  assert.ok(Array.isArray(impact.userContextFactors));
+  assert.ok(impact.userContextFactors.length >= 3);
+  assert.ok(impact.disclaimer.includes('Not financial advice'));
+});
+
+runTest('NEWS_CATEGORIES: Supports all 8 required categories plus All', () => {
+  const expectedCategories = [
+    'All',
+    'Market',
+    'Economy',
+    'Banking',
+    'Personal Finance',
+    'Mutual Funds',
+    'Stocks',
+    'RBI',
+    'Government / Tax'
+  ];
+  for (const cat of expectedCategories) {
+    assert.ok(NEWS_CATEGORIES.includes(cat), `Missing expected category: ${cat}`);
+  }
 });
 
 // -------------------------------------------------------------

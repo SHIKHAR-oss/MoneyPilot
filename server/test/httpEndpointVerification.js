@@ -161,6 +161,69 @@ server.listen(5099, async () => {
       const isExpected = res.status === 503 ? data.code === 'DB_UNAVAILABLE' : (res.status === 400 && data.code === 'INVALID_INPUT');
       logTest('POST /api/ai/assistant validation: Handled safely (503 DB_UNAVAILABLE or 400 INVALID_INPUT)', isExpected);
     }
+
+    // 14. Financial News Feed Endpoint
+    {
+      const res = await fetch(`${BASE}/api/news`);
+      const data = await res.json();
+      const ok = res.status === 200 && data.status === 'success' && Array.isArray(data.data.articles) && data.data.category === 'All';
+      logTest('GET /api/news: Returns 200 with articles and category metadata', ok);
+    }
+
+    // 15. Financial News Category Filtering
+    {
+      const res = await fetch(`${BASE}/api/news?category=RBI`);
+      const data = await res.json();
+      const ok = res.status === 200 && data.status === 'success' && data.data.category === 'RBI';
+      logTest('GET /api/news?category=RBI: Filters correctly by sector', ok);
+    }
+
+    // 16. Financial News Personalization Auth Protection
+    {
+      const res = await fetch(`${BASE}/api/news/personalize`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ article: { title: 'RBI Repo Rate Announcement' } })
+      });
+      const data = await res.json();
+      logTest('POST /api/news/personalize without token: Returns 401 AUTH_TOKEN_MISSING', res.status === 401 && data.code === 'AUTH_TOKEN_MISSING');
+    }
+
+    // 17. Financial News Personalization Payload Validation
+    {
+      const res = await fetch(`${BASE}/api/news/personalize`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${testToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ article: {} })
+      });
+      const data = await res.json();
+      const isExpected = res.status === 503 ? data.code === 'DB_UNAVAILABLE' : (res.status === 400 && data.code === 'INVALID_ARTICLE_PAYLOAD');
+      logTest('POST /api/news/personalize validation: Handled safely (503 DB_UNAVAILABLE or 400 INVALID_ARTICLE_PAYLOAD)', isExpected);
+    }
+
+    // 18. Authentication Login Endpoint Verification
+    {
+      const res = await fetch(`${BASE}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: '', password: '' })
+      });
+      const data = await res.json();
+      const isExpected = res.status === 503 ? data.code === 'DB_UNAVAILABLE' : (res.status === 400 && data.message.includes('email and password'));
+      logTest('POST /api/auth/login validation: Handled safely with 400 or 503', isExpected);
+    }
+
+    // 19. CORS Production Frontend Origin Verification
+    {
+      const res = await fetch(`${BASE}/api/health`, {
+        headers: { Origin: 'https://moneypilot-s3g4.onrender.com' }
+      });
+      const allowHeader = res.headers.get('access-control-allow-origin');
+      logTest('CORS: Allows https://moneypilot-s3g4.onrender.com', allowHeader === 'https://moneypilot-s3g4.onrender.com');
+    }
   } catch (err) {
     console.error('HTTP Test Execution Error:', err);
   } finally {
