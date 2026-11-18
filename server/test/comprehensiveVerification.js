@@ -188,6 +188,24 @@ runTest('calculateFinancialHealthScore: Bounds check (0 <= score <= 100)', () =>
   assert.strictEqual(deficitScore.rating, 'Critical');
 });
 
+runTest('calculateFinancialHealthScore: Fresh/empty profile produces score 0 (43 -> 0 fix)', () => {
+  const emptyInput = {
+    profile: { monthlyIncome: 0, currentSavings: 0, emergencyFund: 0, riskProfile: 'moderate' },
+    ledger: { effectiveMonthlyIncome: 0, effectiveMonthlyExpenses: 0, totalIncomeTransactions: 0, totalExpenseTransactions: 0, recentTransactions: [] },
+    goals: { items: [], totalTargetAmount: 0, totalCurrentAmount: 0, count: 0 },
+    investments: { items: [], totalValue: 0, totalMonthlyContribution: 0, count: 0 }
+  };
+  const emptyMetrics = calculateFinancialMetrics(emptyInput);
+  const emptyScore = calculateFinancialHealthScore(emptyMetrics, emptyInput);
+
+  assert.strictEqual(emptyScore.score, 0, 'Fresh account health score must be 0, not 43');
+  assert.strictEqual(emptyScore.components.savingsRate.score, 0);
+  assert.strictEqual(emptyScore.components.emergencyFund.score, 0);
+  assert.strictEqual(emptyScore.components.cashFlow.score, 0);
+  assert.strictEqual(emptyScore.components.goalProgress.score, 0);
+  assert.strictEqual(emptyScore.components.investmentPosition.score, 0);
+});
+
 // -------------------------------------------------------------
 // 4. Decision Simulation Engine Tests (All 4 Types)
 // -------------------------------------------------------------

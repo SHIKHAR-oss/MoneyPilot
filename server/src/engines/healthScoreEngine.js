@@ -33,7 +33,7 @@ export const calculateFinancialHealthScore = (metrics, rawData) => {
       savingsScore = 0;
       savingsReason = 'No active income recorded while incurring expenses.';
     } else {
-      savingsScore = 12.5;
+      savingsScore = 0;
       savingsReason = 'Income and expenses not yet recorded.';
     }
   } else if (savingsRate >= 25) {
@@ -65,7 +65,7 @@ export const calculateFinancialHealthScore = (metrics, rawData) => {
       emergencyScore = 25;
       emergencyReason = `Emergency fund of ₹${emergencyFund.toLocaleString()} with zero recorded recurring expenses.`;
     } else {
-      emergencyScore = 12.5;
+      emergencyScore = 0;
       emergencyReason = 'No emergency fund or expense data configured.';
     }
   } else if (emergencyFundCoverage >= 6) {
@@ -97,7 +97,7 @@ export const calculateFinancialHealthScore = (metrics, rawData) => {
       cashFlowScore = 0;
       cashFlowReason = 'Cash flow deficit with zero recorded income.';
     } else {
-      cashFlowScore = 10;
+      cashFlowScore = 0;
       cashFlowReason = 'Cash flow baseline unconfigured.';
     }
   } else if (expenseToIncomeRatio <= 50) {
@@ -125,7 +125,7 @@ export const calculateFinancialHealthScore = (metrics, rawData) => {
   let goalReason = '';
 
   if (goals.count === 0) {
-    goalScore = 7.5;
+    goalScore = 0;
     goalReason = 'No active financial goals configured.';
   } else {
     const avgProgress = metrics.goals.overallProgress;

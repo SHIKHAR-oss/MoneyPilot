@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import { generateToken } from '../utils/jwt.js';
+import { verifyTurnstileToken } from '../services/turnstileService.js';
 
 /**
  * Register a new user
@@ -66,8 +67,27 @@ export const register = async (req, res) => {
  */
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, turnstileToken } = req.body;
 
+    // 1. Bot Protection / CAPTCHA Validation
+    if (!turnstileToken) {
+      return res.status(400).json({
+        status: 'error',
+        code: 'CAPTCHA_REQUIRED',
+        message: 'Security verification (CAPTCHA) is required. Please complete the security check.'
+      });
+    }
+
+    const captchaResult = await verifyTurnstileToken(turnstileToken, req.ip);
+    if (!captchaResult.success) {
+      return res.status(400).json({
+        status: 'error',
+        code: captchaResult.code || 'CAPTCHA_INVALID',
+        message: captchaResult.message || 'Security verification failed. Please try again.'
+      });
+    }
+
+    // 2. Credential Payload Validation
     if (!email || !password) {
       return res.status(400).json({
         status: 'error',

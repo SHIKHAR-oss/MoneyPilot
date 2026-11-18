@@ -3,10 +3,13 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Compass, Lock, Mail, ArrowRight } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth.js';
 import ErrorMessage from '../components/common/ErrorMessage.jsx';
+import TurnstileWidget from '../components/common/TurnstileWidget.jsx';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const [resetTrigger, setResetTrigger] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -19,13 +22,21 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+
+    if (!turnstileToken) {
+      setError('Please complete the security verification (CAPTCHA) to sign in.');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      await login(email, password);
+      await login(email, password, turnstileToken);
       navigate(from, { replace: true });
     } catch (err) {
       setError(err.message || 'Login failed. Please check your credentials.');
+      setTurnstileToken('');
+      setResetTrigger((prev) => prev + 1);
     } finally {
       setLoading(false);
     }
@@ -78,9 +89,17 @@ export default function LoginPage() {
             </div>
           </div>
 
+          {/* Cloudflare Turnstile Bot Protection Widget */}
+          <TurnstileWidget
+            onVerify={(token) => setTurnstileToken(token)}
+            onError={() => setTurnstileToken('')}
+            onExpire={() => setTurnstileToken('')}
+            resetTrigger={resetTrigger}
+          />
+
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !turnstileToken}
             className="w-full py-3 bg-[#087F5B] hover:bg-[#066649] disabled:bg-[#D1DED5] text-white text-sm font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 mt-2"
           >
             {loading ? (

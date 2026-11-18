@@ -204,19 +204,43 @@ server.listen(5099, async () => {
       logTest('POST /api/news/personalize validation: Handled safely (503 DB_UNAVAILABLE or 400 INVALID_ARTICLE_PAYLOAD)', isExpected);
     }
 
-    // 18. Authentication Login Endpoint Verification
+    // 18. Authentication Login Endpoint: Missing CAPTCHA Token Rejected
     {
       const res = await fetch(`${BASE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: '', password: '' })
+        body: JSON.stringify({ email: 'user@example.com', password: 'password123' })
+      });
+      const data = await res.json();
+      const isExpected = res.status === 400 && data.code === 'CAPTCHA_REQUIRED';
+      logTest('POST /api/auth/login without turnstileToken: Returns 400 CAPTCHA_REQUIRED', isExpected);
+    }
+
+    // 19. Authentication Login Endpoint: Invalid CAPTCHA Token Rejected
+    {
+      const res = await fetch(`${BASE}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: 'user@example.com', password: 'password123', turnstileToken: 'invalid_test_token' })
+      });
+      const data = await res.json();
+      const isExpected = res.status === 400 && data.code === 'CAPTCHA_INVALID';
+      logTest('POST /api/auth/login with invalid turnstileToken: Returns 400 CAPTCHA_INVALID', isExpected);
+    }
+
+    // 20. Authentication Login Endpoint: Valid CAPTCHA Token Proceeds to Credential Validation
+    {
+      const res = await fetch(`${BASE}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: '', password: '', turnstileToken: 'valid_test_token' })
       });
       const data = await res.json();
       const isExpected = res.status === 503 ? data.code === 'DB_UNAVAILABLE' : (res.status === 400 && data.message.includes('email and password'));
-      logTest('POST /api/auth/login validation: Handled safely with 400 or 503', isExpected);
+      logTest('POST /api/auth/login with valid CAPTCHA: Validates credentials safely', isExpected);
     }
 
-    // 19. CORS Production Frontend Origin Verification
+    // 21. CORS Production Frontend Origin Verification
     {
       const res = await fetch(`${BASE}/api/health`, {
         headers: { Origin: 'https://moneypilot-s3g4.onrender.com' }

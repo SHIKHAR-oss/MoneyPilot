@@ -40,8 +40,8 @@ export const AuthProvider = ({ children }) => {
     restoreSession();
   }, []);
 
-  const login = async (email, password) => {
-    const response = await api.auth.login(email, password);
+  const login = async (email, password, turnstileToken) => {
+    const response = await api.auth.login(email, password, turnstileToken);
     const { token: newToken, user: newUser } = response.data;
     localStorage.setItem('moneypilot_token', newToken);
     setToken(newToken);
